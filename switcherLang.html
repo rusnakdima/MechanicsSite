@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Switch Lang</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <style>
+            body{
+                font-size: 20pt;
+            }
+            li, summary{
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <details open>
+            <summary data-ruVal="Язык" data-enVal="Language"></summary>
+            <ul>
+                <li><div class="link" id="ruSel" data-ruVal="Русский" data-enVal="Russian"></div></li>
+                <li><div class="link" id="enSel" data-ruVal="Английский" data-enVal="English"></div></li>
+            </ul>
+        </details>
+        <p data-ruVal="Неизвестно" data-enVal="Unknown"></p>
+        <p data-ruVal="Неизвестно" data-enVal="Unknown"></p>
+        <p data-ruVal="Неизвестно" data-enVal="Unknown"></p>
+        <p data-ruVal="Неизвестно" data-enVal="Unknown"></p>
+        <p data-ruVal="Неизвестно" data-enVal="Unknown"></p>
+        <p data-ruVal="Неизвестно" data-enVal="Unknown"></p>
+        <p data-ruVal="Неизвестно" data-enVal="Unknown"></p>
+        <script>
+            var changeLang;
+            $(document).ready(function() {
+                changeLang = window.navigator.language.substring(0, 2);
+                localStorage.setItem("lang", changeLang);
+                if (localStorage.getItem('lang') === "ru") langChange("ru");
+                else if (localStorage.getItem('lang') === "en") langChange("en");
+                else langChange("ru");
+            });
+
+            function langChange(changeLang){
+                var lang = document.querySelectorAll("[data-"+changeLang+"val]");
+                for(var i=0;i < lang.length;i++){
+                    $(lang[i]).text(lang[i].dataset[changeLang+"val"]);
+                }
+            }
+
+            $("#ruSel").click(()=>{
+                changeLang = "ru";
+                localStorage.setItem("lang", changeLang);
+                langChange(changeLang);
+            });
+            $("#enSel").click(()=>{
+                changeLang = "en";
+                localStorage.setItem("lang", changeLang);
+                langChange(changeLang);
+            });
+        </script>
+    </body>
+</html>

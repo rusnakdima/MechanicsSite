@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Switch Theme</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <style>
+            body{
+                font-size: 20pt;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="position: fixed; bottom: 100px; float: right; right: 15px; width: auto; height: auto; z-index: 4998;">
+			<img id="light" src="Sun.png" style="background: #fff; border-radius: 50%" width="40pt" height="40pt" onclick="LightTheme();"/>
+			<img id="dark" src="Moon.png" width="40pt" height="40pt" onclick="DarkTheme();"/>
+		</div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec tincidunt sapien, eget mattis justo. In nec enim at felis laoreet vulputate rutrum ut diam. Sed vitae est vitae velit feugiat scelerisque at et magna. Aenean eros arcu, euismod ac pharetra a, pellentesque sit amet metus. Praesent porttitor auctor lobortis. Curabitur in lorem ac lectus varius venenatis in bibendum eros. Pellentesque consequat sit amet turpis nec accumsan. Duis augue metus, blandit et risus vel, facilisis elementum diam. Nulla id accumsan turpis, eget sagittis massa. Sed non leo sit amet velit accumsan sodales. Cras egestas diam sed tellus rhoncus, et vulputate orci sodales. Vivamus quis lobortis magna, vel ornare nisi. Vestibulum non erat egestas, suscipit magna ut, interdum sem. Aenean dignissim lacus ac diam tincidunt iaculis. Cras tincidunt pharetra mollis. Duis posuere pretium erat.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec tincidunt sapien, eget mattis justo. In nec enim at felis laoreet vulputate rutrum ut diam. Sed vitae est vitae velit feugiat scelerisque at et magna. Aenean eros arcu, euismod ac pharetra a, pellentesque sit amet metus. Praesent porttitor auctor lobortis. Curabitur in lorem ac lectus varius venenatis in bibendum eros. Pellentesque consequat sit amet turpis nec accumsan. Duis augue metus, blandit et risus vel, facilisis elementum diam. Nulla id accumsan turpis, eget sagittis massa. Sed non leo sit amet velit accumsan sodales. Cras egestas diam sed tellus rhoncus, et vulputate orci sodales. Vivamus quis lobortis magna, vel ornare nisi. Vestibulum non erat egestas, suscipit magna ut, interdum sem. Aenean dignissim lacus ac diam tincidunt iaculis. Cras tincidunt pharetra mollis. Duis posuere pretium erat.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec tincidunt sapien, eget mattis justo. In nec enim at felis laoreet vulputate rutrum ut diam. Sed vitae est vitae velit feugiat scelerisque at et magna. Aenean eros arcu, euismod ac pharetra a, pellentesque sit amet metus. Praesent porttitor auctor lobortis. Curabitur in lorem ac lectus varius venenatis in bibendum eros. Pellentesque consequat sit amet turpis nec accumsan. Duis augue metus, blandit et risus vel, facilisis elementum diam. Nulla id accumsan turpis, eget sagittis massa. Sed non leo sit amet velit accumsan sodales. Cras egestas diam sed tellus rhoncus, et vulputate orci sodales. Vivamus quis lobortis magna, vel ornare nisi. Vestibulum non erat egestas, suscipit magna ut, interdum sem. Aenean dignissim lacus ac diam tincidunt iaculis. Cras tincidunt pharetra mollis. Duis posuere pretium erat.</p>
+        <script>
+            //Переключатель темы
+            var change;
+            function LightTheme(){
+                change = "light";
+                localStorage.setItem("theme", change);
+                $("#light").hide();
+                $("#dark").show();
+                $("body").css({"background-color" : "#fff", "color" : "#000"});
+            }
+            function DarkTheme() {
+                change = "dark";
+                localStorage.setItem("theme", change);
+                $("#light").show();
+                $("#dark").hide();
+                $("body").css({"background-color" : "#222", "color" : "#fff"});
+            }
+            if (localStorage.getItem('theme') === "light") LightTheme();
+            else if (localStorage.getItem('theme') === "dark") DarkTheme();
+            else LightTheme();
+        </script>
+    </body>
+</html>

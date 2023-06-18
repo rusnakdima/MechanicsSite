@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Moved List</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <style>
+            body{
+                font-size: 20pt;
+            }
+            ul{
+                margin: 0;
+                padding: 0;
+                width: 200px;
+            }
+            .list{
+                border-bottom: 1px solid black;
+                list-style: none;
+                margin: 0;
+                height: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <ul>
+            <li class="list">1</li>
+            <li class="list">2</li>
+            <li class="list">3</li>
+            <li class="list">4</li>
+            <li class="list">5</li>
+            <li class="list">6</li>
+            <li class="list">7</li>
+            <li class="list">8</li>
+            <li class="list">9</li>
+            <li class="list">10</li>
+            <li class="list">11</li>
+            <li class="list">12</li>
+            <li class="list">13</li>
+            <li class="list">14</li>
+            <li class="list">15</li>
+        </ul>
+        <script>
+            $(".list").mouseover(function(){
+                $(this).css({"margin-left": "15px", "transition":".15s"});
+            });
+            $(".list").mouseleave(function(){
+                setTimeout(()=>{
+                    $(this).css({"margin-left": "0px", "transition":".15s"});
+                }, 100);
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Snow Mode</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <script src="snowfall.js"></script>
+        <style>
+            body{
+                font-size: 20pt;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <script>
+            $(document).snowfall("clear");
+            $(document).snowfall({flakeCount: 500, image: "snow_light.png", minSize: 30, maxSize: 35, minSpeed: 1, maxSpeed: 5});
+        </script>
+    </body>
+</html>

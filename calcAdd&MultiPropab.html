@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+		<script src="jquery-3.6.0.min.js"></script>
+		<style>
+			/* полоса прокрутки (скроллбар) */
+			::-webkit-scrollbar {
+				width: 16px; /* ширина для вертикального скролла */
+				height: 8px; /* высота для горизонтального скролла */
+				background-color: white;
+			}
+			/* ползунок скроллбара */
+			::-webkit-scrollbar-thumb {
+				background-color: red;
+				border-radius: 20pt;
+			}
+			/* Стрелки */
+			::-webkit-scrollbar-button:vertical:start:decrement {
+				background:
+					linear-gradient(120deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(240deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(0deg, black 30%, rgba(0, 0, 0, 0) 31%);
+				background-color: white;
+			}
+			::-webkit-scrollbar-button:vertical:end:increment {
+				background:
+					linear-gradient(300deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(60deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(180deg, black 30%, rgba(0, 0, 0, 0) 31%);
+				background-color: white;
+			}
+			::-webkit-scrollbar-button:horizontal:start:decrement {
+				background:
+					linear-gradient(30deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(150deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(270deg, black 30%, rgba(0, 0, 0, 0) 31%);
+				background-color: white;
+			}
+			::-webkit-scrollbar-button:horizontal:end:increment {
+				background:
+					linear-gradient(210deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(330deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(90deg, black 30%, rgba(0, 0, 0, 0) 31%);
+				background-color: white;
+			}
+			@font-face {
+			font-family: font;
+			src: url(font.ttf);
+			}
+			html, body, p, input, a, output, td{
+			font-family: font;
+			}
+			a{
+				text-decoration: none;
+			}
+			body {
+				margin: 15px;
+				left: 0;
+				top: 0;
+				font-size: 18pt;
+			}
+			input{
+				font-size: 18pt;
+				width: 200pt;
+				color: white;
+				border-bottom: 2px solid #05f;
+				border-right: none;
+				border-left: none;
+				border-top: none;
+			}
+			/* Общая кнопка */
+			.buttonwindow{
+			position: relative;
+			height: 50px;
+			z-index: 0;
+			}
+			.button {
+			position: absolute;
+			cursor: pointer;
+			padding: 5px 10px;
+			border-radius: 5px;
+			background: red;
+			}
+			p::selection {
+			background: red;
+			}
+			td::selection {
+			background: gray;
+			}
+			input::selection {
+			background: gray;
+			}
+			a::selection {
+			background: gray;
+			}
+			span::selection {
+			background: red;
+			}
+			output::selection {
+			background: red;
+			}
+			br::selection {
+			background: red;
+			}
+		</style>
+	</html>
+	<body align="justify">
+		<p data-rVal="Данный калькулятор может рассчитать пример, теоремами сложения и произведения вероятностей. Пример, P(A¬B + ¬AB) = P(A¬B)+P(¬AB)." data-eVal="This calculator can calculate an example, addition theorems and products of probabilities. Example, P(A¬B + ¬AB) = P(A¬B)+P(¬AB)."></p>
+		
+		<p data-rVal="Введите сколько в задаче событий" data-eVal="Enter how many events are in the task"></p>
+		<p><input id="B" type="number" value="0"></p>
+			
+		<p data-rVal="Введите значения каждого события (они десятичные и записывать их надо ввиде 0.1). Каждое значение разделять точкой с запятой (н-р, 0.1;0.2)" data-eVal="Enter the values of each event (they are decimal and should be written as 0.1). Separate each value with a semicolon (ex, 0.1,0.2)"></p>
+		<p><input id="val" value="0.0;0.0"></p>
+		
+		<p data-rVal="Введите какую вероятность надо найти" data-eVal="Enter what probability you need to find"></p>
+		<p><input id="findB" type="number" value="0"></p>
+		
+		<p></p>
+		<div class="buttonwindow">
+			<a class="button" id="calc" href="#down" data-rVal="Рассчитать" data-eVal="Calculate"></a>
+		</div>
+		<p></p>
+		<output id="output"></output>
+		<a id="down"></a>
+
+		<script>
+			$(document).ready(function(){
+				$(".disclaimer").remove();
+			});
+			
+			$("#B").focusin(function(){
+				$("footer").hide();
+			});
+			$("#val").focusin(function(){
+				$("footer").hide();
+			});
+			$("#findB").focusin(function(){
+				$("footer").hide();
+			});
+			$("#B").focusout(function(){
+				$("footer").show();
+			});
+			$("#val").focusout(function(){
+				$("footer").show();
+			});
+			$("#findB").focusout(function(){
+				$("footer").show();
+			});
+			
+			//руская версия страницы
+			$("#calc").click(function(){
+				var rB = $("#B").val();
+				var rval = $("#val").val();
+				var rFindVal = $("#findB").val();
+				
+				if (localStorage.getItem('lang') === "ru") document.getElementById("output").innerHTML = "Результаты расчёта<br><br>";
+				else document.getElementById("output").innerHTML = "Calculation results<br><br>";
+				
+				var valArray = [];
+				valArray = rval.split(';');
+				if(rFindVal == rB){
+					var rez = 1;
+					for (var i = 0; i < valArray.length; i++){
+						rez *= valArray[i];
+					}
+					document.getElementById("output").innerHTML += rez;
+				} else if(rFindVal == 0){
+					var rez = 1;
+					for (var i = 0; i < valArray.length; i++){
+						rez *= (1 - valArray[i]);
+					}
+					document.getElementById("output").innerHTML += rez;
+				} else if(rFindVal == 1){
+					var rez = 0;
+					for (var i = 0; i < valArray.length; i++){
+						var intervalRez = 1;
+						for (var j = 0; j < valArray.length; j++){
+							if(i==j)
+								intervalRez *= valArray[j];
+							else
+								intervalRez *= (1 - valArray[j]);
+						}
+						rez += intervalRez;
+					}
+					document.getElementById("output").innerHTML += rez;
+				} else if(rFindVal == (rB-1)){
+					var rez = 0;
+					for (var i = 0; i < valArray.length; i++){
+						var intervalRez = 1;
+						for (var j = 0; j < valArray.length; j++){
+							if(i==j)
+								intervalRez *= (1 - valArray[j]);
+							else
+								intervalRez *= valArray[j];
+						}
+						rez += intervalRez;
+					}
+					document.getElementById("output").innerHTML += rez;
+				} else if(rFindVal == (rB-2)){
+					var rez = 0;
+				for (var k = 1; k < valArray.length; k++){
+					for (var i = 0; i < valArray.length-k; i++){
+						var intervalRez = 1;
+						for (var j = 0; j < valArray.length; j++){
+							if(i == j || i+k == j) intervalRez *= (1- valArray[j]);
+							else intervalRez *= valArray[j];
+						}
+						rez += intervalRez;
+					}
+				}
+				//rez -= 3;
+				document.getElementById("output").innerHTML += rez;
+				} else if(rFindVal == 2){
+					var rez = 0;
+					for (var k = 1; k < valArray.length; k++){
+					for (var i = 0; i < valArray.length-k; i++){
+						var intervalRez = 1;
+						for (var j = 0; j < valArray.length; j++){
+							if((i < valArray.length-k) && (i == j || i+k == j)) intervalRez *= valArray[j];
+							else if(i < valArray.length-k) intervalRez *= (1 - valArray[j]);
+						}
+						rez += intervalRez;
+					}
+					}
+					//rez -= 3;
+					document.getElementById("output").innerHTML += rez;
+				} else if(rFindVal == (rB-3)){
+					var rez = 0;
+					for (var k = 1; k < valArray.length; k++){
+					for (var i = 0; i < valArray.length-(k+1); i++){
+						var intervalRez = 1;
+						for (var j = 0; j < valArray.length; j++){
+							if(i == j || i+k == j || i+(k+1) == j) intervalRez *= (1- valArray[j]);
+							else intervalRez *= valArray[j];
+						}
+						rez += intervalRez;
+					}
+					}
+					//rez -= 3;
+					document.getElementById("output").innerHTML += rez;
+				} else if(rFindVal == 3){
+					var rez = 0;
+					for (var k = 1; k < valArray.length; k++){
+					for (var i = 0; i < valArray.length-(k+1); i++){
+						var intervalRez = 1;
+						for (var j = 0; j < valArray.length; j++){
+							if(i == j || i+k == j || i+(k+1) == j) intervalRez *= valArray[j];
+							else intervalRez *= (1 - valArray[j]);
+						}
+						rez += intervalRez;
+					}
+					}
+					//rez -= 3;
+					document.getElementById("output").innerHTML += rez;
+				}
+			});
+
+			setInterval (()=>{
+				function langRu(){
+					var lang = document.querySelectorAll("[data-rval]");
+					for(var i=0;i < lang.length;i++){
+						$(lang[i]).text(lang[i].dataset.rval);
+					}
+				}
+				function langEn(){
+					var lang = document.querySelectorAll("[data-eval]");
+					for(var i=0;i < lang.length;i++){
+						$(lang[i]).text(lang[i].dataset.eval);
+					}
+				}
+
+				if (localStorage.getItem('lang') === "ru"){
+					langRu();
+				} else if (localStorage.getItem('lang') === "en"){
+					langEn();
+				} else {
+					langRu();
+				}
+				
+				//Переключатель темы
+				var change;
+				function LightTheme(){
+					change = "light";
+					localStorage.setItem("theme", change);
+					$("#light").hide();
+					$("#dark").show();
+					$("body").css({"background-color":"#fff", "color":"#000"});
+					$("header").css({"border-bottom":"6px solid black", "background":"rgba(255, 255, 255, .8)", "color":"black"});
+					$("td").css({"color":"#fff", "border":"2px solid black"});
+					$("input").css({"color":"#000", "background":"#fff"});
+					$(".button").css({"color":"#fff", "background":"#222", "border":"1px solid #222", "box-shadow": "0 7px #777"});
+					$(".button").bind("touchend mouseup", function(){
+					$(this).css({"color":"#fff", "background":"#222", "border":"1px solid #222", "box-shadow": "0 7px #777", "transform":"translate(0, 0)"});
+					});
+					$(".button").bind("touchend mousedown", function(){
+					$(this).css({"color":"#000", "background":"#aaa", "border":"none", "box-shadow": "none", "transform":"translate(0, 7px)"});
+					});
+				}
+				function DarkTheme(){
+					change = "dark";
+					localStorage.setItem("theme", change);
+					$("#light").show();
+					$("#dark").hide();
+					$("body").css({"background-color":"#222", "color":"#fff"});
+					$("header").css({"border-bottom":"6px solid white", "background":"rgba(0, 0, 0, .7)", "color":"white"});
+					$("td").css({"color":"#fff", "border":"2px solid white"});
+					$("input").css({"color":"#fff", "background":"#222"});
+					$(".button").css({"color":"#000", "background":"#ddd", "border":"1px solid #ddd", "box-shadow": "0 7px #888"});
+					$(".button").bind("touchend mouseup", function(){
+					$(this).css({"color":"#000", "background":"#ddd", "border":"1px solid #ddd", "box-shadow": "0 7px #888", "transform":"translate(0, 0)"});
+					});
+					$(".button").bind("touchend mousedown", function(){
+					$(this).css({"color":"#fff", "background":"#555", "border":"none", "box-shadow": "none", "transform":"translate(0, 7px)"});
+					});
+				}
+				if(localStorage.getItem('theme') === "light"){
+					LightTheme();
+				} else if(localStorage.getItem('theme') === "dark"){
+					DarkTheme();
+				} else {
+					LightTheme();
+				}
+			},250);
+		</script>
+	</body>
+</html>

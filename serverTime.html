@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Server Time</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <style>
+            body{
+                font-size: 20pt;
+            }
+            /*Стили временной шкалы*/
+            .timeline{
+            position: absolute;
+            font-size: 20pt;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 5px;
+            top: 15px;
+            left: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <span class="timeline">Серверное время: <span id="time">NaN</span></span>
+
+        <script>
+            // Функция создания текущего времени
+            setInterval(function() {
+                var tnow = new Date();
+                //Создание серверного времени
+                var h = tnow.getHours();
+                var m = tnow.getMinutes();
+                var s = tnow.getSeconds();
+                h = (h < 10) ? '0' + h : h;
+                m = (m < 10) ? '0' + m : m;
+                s = (s < 10) ? '0' + s : s;
+                document.getElementById('time').innerHTML = h + ':' + m + ':' + s;
+            }, 1000);
+        </script>
+    </body>
+</html>

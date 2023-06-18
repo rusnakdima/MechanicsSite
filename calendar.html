@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+		<script src="jquery-3.6.0.min.js"></script>
+		<script src="popper.min.js"></script>
+		<script src="tippy.js"></script>
+		<style>
+			/* Стили окна календаря */
+			#calendar {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				margin: 0;
+				top: 0;
+				left: 0;
+				z-index: 1000;
+				font: monospace;
+				font-size: 20pt;
+				text-align: center;
+			}
+			#calendar select{
+				font-size: 20pt;
+				border: none;
+			}
+			#calendar option{
+				font-size: 20pt;
+				border: none;
+			}
+			#calendar input{
+				font-size: 20pt;
+				border: none;
+			}
+			#calendar tbody td {
+				border-radius: 5px;
+			}
+			#calendar tbody td.today {
+				color: white;
+				background-color: blue;
+			}
+			.holiday {
+				color: white;
+				background-color: red;
+			}
+		</style>
+	</head>
+    <body>
+		<table id="calendar">
+			<thead>
+				<tr>
+					<td colspan="4">
+						<select>
+							<option value="0" data-rVal="Январь" data-eVal="January"></option>
+							<option value="1" data-rVal="Февраль" data-eVal="February"></option>
+							<option value="2" data-rVal="Март" data-eVal="March"></option>
+							<option value="3" data-rVal="Апрель" data-eVal="April"></option>
+							<option value="4" data-rVal="Май" data-eVal="May"></option>
+							<option value="5" data-rVal="Июнь" data-eVal="June"></option>
+							<option value="6" data-rVal="Июль" data-eVal="July"></option>
+							<option value="7" data-rVal="Август" data-eVal="August"></option>
+							<option value="8" data-rVal="Сентябрь" data-eVal="September"></option>
+							<option value="9" data-rVal="Октябрь" data-eVal="October"></option>
+							<option value="10" data-rVal="Ноябрь" data-eVal="November"></option>
+							<option value="11" data-rVal="Декабрь" data-eVal="December"></option>
+						</select>
+					</td>
+					<td colspan="3"><input type="number" value="" min="0" max="9999" size="4"></td>
+				</tr>
+				<tr>
+					<td data-rVal="ПН" data-eVal="MON">
+					<td data-rVal="ВТ" data-eVal="TUE">
+					<td data-rVal="СР" data-eVal="WED">
+					<td data-rVal="ЧТ" data-eVal="THU">
+					<td data-rVal="ПТ" data-eVal="FRI">
+					<td data-rVal="СБ" data-eVal="SAT">
+					<td data-rVal="ВС" data-eVal="SUN">
+				</tr>
+			<tbody>
+		</table>
+		<script>		
+			function Calendar(id, year, month){
+				var Dlast = new Date(year, month + 1, 0).getDate(),
+					D = new Date(year, month, Dlast),
+					DNlast = D.getDay(),
+					DNfirst = new Date(D.getFullYear(), D.getMonth(), 1).getDay(),
+					calendar = '<tr>',
+					m = document.querySelector('#' + id + ' option[value="' + D.getMonth() + '"]'),
+					g = document.querySelector('#' + id + ' input');
+
+				$("#calendar select").val(D.getMonth());
+
+				if (DNfirst != 0){
+					for (var i = 1; i < DNfirst; i++)
+						calendar += '<td>';
+				}else{
+					for (var i = 0; i < 6; i++)
+						calendar += '<td>';
+				}
+
+				for (var i = 1; i <= Dlast; i++){
+					if ((i == 13 && $("#calendar select").val() == 09) ||
+						(i == 31 && $("#calendar select").val() == 11) ||
+						(i == 01 && $("#calendar select").val() == 00) ||
+						(i == 03 && $("#calendar select").val() == 00) ||
+						(i == 07 && $("#calendar select").val() == 00) ||
+						(i == 23 && $("#calendar select").val() == 01) ||
+						(i == 08 && $("#calendar select").val() == 02) ||
+						(i == 07 && $("#calendar select").val() == 04) ||
+						(i == 09 && $("#calendar select").val() == 04)){
+						calendar += '<td id="' + i + D.getMonth() + '" class="holiday">' + i;
+					}else if (i == new Date().getDate() && D.getMonth() == new Date().getMonth()){
+						calendar += '<td id="' + i + D.getMonth() + '" class="today">' + i;
+					}else{
+						calendar += '<td id="' + i + D.getMonth() + '">' + i;
+					}
+					if (new Date(D.getFullYear(), D.getMonth(), i).getDay() == 0){
+						calendar += '<tr>';
+					}
+				}
+
+				for (var i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
+				document.querySelector('#' + id + ' tbody').innerHTML = calendar;
+				g.value = D.getFullYear();
+				m.selected = true;
+
+				if (document.querySelectorAll('#' + id + ' tbody tr').length < 6)
+				{
+					document.querySelector('#' + id + ' tbody').innerHTML += '<tr><td>&nbsp;<td>&nbsp;<td>&nbsp;<td>&nbsp;<td>&nbsp;<td>&nbsp;<td>&nbsp;';
+				}
+
+				//День создания сайта
+				if (D.getFullYear() > 2019)
+				{
+					$('#' + 13 + 9).addClass("holiday");
+					tippy(document.getElementById("139"), {
+						content : "День создания сайта! / The day of the website creation!",
+					});
+				}
+				//День рождение автора
+				if (D.getFullYear() > 2002)
+				{
+					$('#' + 3 + 0).addClass("holiday");
+					tippy(document.getElementById("30"), {
+						content : "День рождение автора блога! / Birthday of the blog author!",
+					});
+				}
+				//Канун нового года
+				$('#' + 31 + 11).addClass("holiday");
+				tippy(document.getElementById("3111"), {
+					content : "Канун Нового Года! / New Year's Eve!",
+				});
+				//Новый год
+				$('#' + 1 + 0).addClass("holiday");
+				tippy(document.getElementById("10"), {
+					content : "Новый год! / New Year!",
+				});
+				//Православное Рождество
+				$('#' + 7 + 0).addClass("holiday");
+				tippy(document.getElementById("70"), {
+					content : "Православное Рождество! / Orthodox Christmas!",
+				});
+				//День защитника Отечества (Россия)
+				$('#' + 23 + 1).addClass("holiday");
+				tippy(document.getElementById("231"), {
+					content : "День защитника Отечества (Россия)! / Defender of the Fatherland Day (Russia)!",
+				});
+				//Международный Женский День
+				$('#' + 8 + 2).addClass("holiday");
+				tippy(document.getElementById("82"), {
+					content : "Международный Женский День! / International Women's Day!",
+				});
+				//День защитника Отечества (Россия)
+				$('#' + 7 + 4).addClass("holiday");
+				tippy(document.getElementById("74"), {
+					content : "День защитника Отечества (Казахстан)! / Defender of the Fatherland Day (Kazakhstan)!",
+				});
+				//День Победы
+				$('#' + 9 + 4).addClass("holiday");
+				tippy(document.getElementById("94"), {
+					content : "День Победы! / Victory Day!",
+				});
+
+				document.querySelector('#' + id + ' option[value="' + new Date().getMonth() + '"]').style.color = 'rgb(220, 0, 0)';
+			}
+
+			Calendar("calendar", new Date().getFullYear(), new Date().getMonth());
+
+			document.querySelector('#calendar').onchange = function Kalendar(){
+				Calendar("calendar", document.querySelector('#calendar input').value, parseFloat(document.querySelector('#calendar select').options[document.querySelector('#calendar select').selectedIndex].value));
+			}
+			setInterval(()=>{
+				function langRu(){
+					var lang = document.querySelectorAll("[data-rval]");
+					for(var i=0;i < lang.length;i++){
+						$(lang[i]).text(lang[i].dataset.rval);
+					}
+				}
+				function langEn(){
+					var lang = document.querySelectorAll("[data-eval]");
+					for(var i=0;i < lang.length;i++){
+						$(lang[i]).text(lang[i].dataset.eval);
+					}
+				}
+
+				if (localStorage.getItem('lang') === "ru"){
+					langRu();
+				} else if (localStorage.getItem('lang') === "en"){
+					langEn();
+				} else {
+					langRu();
+				}
+				
+				//Переключатель темы
+				var change;
+				function LightTheme(){
+					change = "light";
+					localStorage.setItem("theme", change);
+					$("#light").hide();
+					$("#dark").show();
+					$("body").css({"background-color":"#fff", "color":"#000"});
+					$("#calendar, #calendar select, #calendar input, #calendar option").css({"background-color":"#fff", "color":"#000"});
+				}
+				function DarkTheme(){
+					change = "dark";
+					localStorage.setItem("theme", change);
+					$("#light").show();
+					$("#dark").hide();
+					$("body").css({"background-color":"#222", "color":"#fff"});
+					$("#calendar, #calendar select, #calendar input, #calendar option").css({"background-color":"#222", "color":"#fff"});
+				}
+				if(localStorage.getItem('theme') === "light"){
+					LightTheme();
+				} else if(localStorage.getItem('theme') === "dark"){
+					DarkTheme();
+				} else {
+					LightTheme();
+				}
+			},250);
+		</script>
+	</body>
+</html>

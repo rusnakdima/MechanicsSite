@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Snow Mode</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <script src="draggabilly.pkgd.js"></script>
+		<script src="draggabilly.pkgd.min.js"></script>
+        <style>
+            body{
+                font-size: 20pt;
+            }
+            #dragElem{
+                width: 200px;
+                height: 200px;
+                border: 2px solid black;
+                border-radius: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="dragElem">
+            <span>Move this block</span>
+        </div>
+        <script>
+            //Скрипт для перемещения калькулятора
+            let draggie = new Draggabilly('#dragElem');
+        </script>
+    </body>
+</html>

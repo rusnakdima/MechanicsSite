@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+    <htmk>
+        <head>
+            <style>
+                body{
+                    background-color: #222;
+                    color: #fff;
+                    margin: 0;
+                    height: 100%;
+                    width: 100%;
+                }
+                .tree{
+                    position: fixed;
+                    bottom: 0;
+                    z-index: -1;
+                }
+                @media screen and (orientation: portrait) {
+                    .tree{
+                        width: 100%;
+                    }
+                }
+                @media screen and (orientation: landscape) {
+                    .tree{
+                        height: 100%;
+                    }
+                }
+                
+            </style>
+            <script src="jquery-3.6.0.min.js"></script>
+            <script src="snowfall.js"></script>
+        </head>
+        <body>
+            <img src="tree.png" class="tree">
+            
+            <script>
+                $(document).ready(function() {
+                    $(document).snowfall({flakeCount: 200, image: "snow_dark.png", minSize: 10, maxSize: 15});
+                });
+            </script>
+        </body>
+    </htmk>

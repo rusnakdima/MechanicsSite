@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+		<script src="jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<style>
+			/* полоса прокрутки (скроллбар) */
+			::-webkit-scrollbar {
+				width: 16px; /* ширина для вертикального скролла */
+				height: 8px; /* высота для горизонтального скролла */
+				background-color: white;
+			}
+			/* ползунок скроллбара */
+			::-webkit-scrollbar-thumb {
+				background-color: red;
+				border-radius: 20pt;
+			}
+			/* Стрелки */
+			::-webkit-scrollbar-button:vertical:start:decrement {
+				background:
+					linear-gradient(120deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(240deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(0deg, black 30%, rgba(0, 0, 0, 0) 31%);
+				background-color: white;
+			}
+			::-webkit-scrollbar-button:vertical:end:increment {
+				background:
+					linear-gradient(300deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(60deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(180deg, black 30%, rgba(0, 0, 0, 0) 31%);
+				background-color: white;
+			}
+			::-webkit-scrollbar-button:horizontal:start:decrement {
+				background:
+					linear-gradient(30deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(150deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(270deg, black 30%, rgba(0, 0, 0, 0) 31%);
+				background-color: white;
+			}
+			::-webkit-scrollbar-button:horizontal:end:increment {
+				background:
+					linear-gradient(210deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(330deg, black 40%, rgba(0, 0, 0, 0) 41%),
+					linear-gradient(90deg, black 30%, rgba(0, 0, 0, 0) 31%);
+				background-color: white;
+			}
+			/*@font-face {
+				font-family: font;
+				src: url(font.ttf);
+			}*/
+			/*html, body, div, span{
+				font-family: font;
+			}*/
+			/* Стили калькулятора */
+			#keys table, #keys td{
+				border: none;
+			}
+			#keys span, #keys span.clear, #keys span.backspace {
+				float: left;
+				cursor: pointer;
+				width: 90px;
+				height: auto;
+				padding: 5px 0 5px 0;
+				font-size: 30pt;
+				background: white;
+				border-radius: 3px;
+				box-shadow: 0px 7px rgba(0, 0, 0, 0.3);
+				margin: 0 7px 11px 0;
+				color: black;
+				text-align: center;
+				transition: all 0.2s ease;
+			}
+			#keys span:hover{
+				background: #8000ff;
+				color: white;
+			}
+			#keys span.operator {
+				background: lime;
+				color: black;
+			}
+			#keys span.operator:hover {
+				background: #8000ff;
+				color: white;
+			}
+			#keys span.eval {
+				background: yellow;
+				box-shadow: 0px 7px rgba(0, 0, 0, 0.3);
+				color: black;
+			}
+			#keys span.clear, #keys span.backspace {
+				background: orange;
+				box-shadow: 0px 7px rgba(0, 0, 0, 0.3);
+				color: black;
+			}
+			#keys span:active {
+				background: red;
+				box-shadow: none;
+				top: 7px;
+				color: white;
+				transform: translate(0, 7px);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="calculator" class="w-max h-max m-5 bg-gray-500 p-5 rounded-xl" style="box-shadow: 0px 8px rgba(0, 0, 0, 0.7);">
+			<div class="top">
+				<div id="screen" class="w-full h-20 bg-white/30 text-white mb-2 shadow-inner text-right rounded-lg text-7xl p-1" style="box-shadow: inset 0px 6px rgba(0, 0, 0, 0.5);"></div>
+			</div>
+			<div id="keys" class="flex flex-row columns-2 gap-x-2">
+				<table class="flex flex-col gap-2">
+					<tr>
+						<td><span>7</span></td>
+						<td><span>8</span></td>
+						<td><span>9</span></td>
+					</tr>
+					<tr>
+						<td><span>4</span></td>
+						<td><span>5</span></td>
+						<td><span>6</span></td>
+					</tr>
+					<tr>
+						<td><span>1</span></td>
+						<td><span>2</span></td>
+						<td><span>3</span></td>
+					</tr>
+					<tr>
+						<td><span>0</span></td>
+						<td><span>.</span></td>
+						<td><span class="eval">=</span></td>
+					</tr>
+				</table>
+				<div class="operators">
+					<table>
+						<tr>
+							<td><span class="clear">AC</span></td>
+							<td><span class="backspace">C</span></td>
+						</tr>
+						<tr>
+							<td><span class="operator">&#215;</span></td>
+							<td><span class="operator">&#247;</span></td>
+						</tr>
+						<tr>
+							<td><span class="operator">+</span></td>
+							<td><span class="operator">-</span></td>
+						</tr>
+						<tr>
+							<td><span class="operator">^</span></td>
+							<td><span class="operator">%</span></td>
+						</tr>
+						<tr>
+							<td><span class="operator">(</span></td>
+							<td><span class="operator">)</span></td>
+						</tr>
+						<tr>
+							<td><span class="operator">&radic;</span></td>
+							<td><span class="operator">&pi;</span></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script>
+			function clickBut(key, type){
+				var input = document.querySelector('#screen');
+				var inputVal = input.innerHTML;
+				if(type == "button") var btnVal = key.innerHTML;
+				if(type == "board") var btnVal = key;
+				if (btnVal == 'AC' || btnVal == 'Delete') {
+					input.innerHTML = '';
+					decimalAdded = false;
+				}
+				else if (btnVal == 'C' || btnVal == 'Backspace') {
+					var delinput = inputVal.slice(0, -1);
+					input.innerHTML = delinput;
+					decimalAdded = false;
+				}
+				else if (btnVal == '%') {
+					var soder = inputVal;
+					var befplus = soder.lastIndexOf('+');
+					var befminus = soder.lastIndexOf('-');
+					var befmultiple = soder.lastIndexOf('*');
+					var befdivide = soder.lastIndexOf('/');
+					var prov = 0;
+					if (befplus > -1) {
+						prov = proverka(befplus, soder);
+					}
+					if (befminus > -1) {
+						prov = proverka(befminus, soder);
+					}
+					if (befmultiple > -1) {
+						prov = proverka(befmultiple, soder);
+					}
+					if (befdivide > -1) {
+						prov = proverka(befdivide, soder);
+					}
+					if (befplus == -1 && befminus == -1 && befmultiple == -1 && befdivide == -1) {
+						soder = soder / 100;
+						input.innerHTML = soder;
+					}
+					function proverka(befznak, soder) {
+						if (befznak > -1) {
+							var precnum = soder.substring(befznak + 1);
+							var number = soder.substring(0, befznak + 1);
+							precnum /= 100;
+							input.innerHTML = number + precnum;
+						}
+					}
+					decimalAdded = false;
+				}
+				else if (btnVal == '\u005E') {
+					input.innerHTML += '\u005E' + '(';
+				}
+				else if (btnVal == '\u221A') {
+					input.innerHTML += '\u221A' + '(';
+				}
+				else if (btnVal == '=' || btnVal == "Enter") {
+					var equation = inputVal;
+
+					if (inputVal.indexOf('\u221A') != -1){
+						input.innerHTML += ')';
+					}
+					if (inputVal.indexOf('^') != -1){
+						input.innerHTML += ')';
+					}
+
+					var lastChar = equation[equation.length - 1];
+					equation = equation.replace(/\u00D7/g, '*').replace(/\u00F7/g, '/').replace(/\u005E/g, '**').replace(/\u221A/g, 'Math.sqrt').replace(/ \u03C0 /g, 'Math.PI');
+					if (operators.indexOf(lastChar) > -1 || lastChar == '.')
+						equation = equation.replace(/.$ /, '');
+					if (equation)
+						input.innerHTML = eval(equation);
+					decimalAdded = false;
+				}
+				else if (operators.indexOf(btnVal) > -1) {
+					var lastChar = inputVal[inputVal.length - 1];
+					if (inputVal != '' && operators.indexOf(lastChar) == -1) {
+						input.innerHTML += btnVal;
+					}
+					else if (inputVal == '' && btnVal == '-') {
+						input.innerHTML += btnVal;
+					}
+					if (operators.indexOf(lastChar) > -1 && inputVal.length > 1) {
+						input.innerHTML = inputVal.replace(/.$ /, btnVal);
+					}
+					decimalAdded = false;
+				} else if (btnVal == '.') {
+					if (!decimalAdded) {
+						input.innerHTML += btnVal;
+						decimalAdded = true;
+					}
+				} else {
+					input.innerHTML += btnVal;
+				}
+			}
+			//Калькулятор
+			var keys = document.querySelectorAll('#calculator span');
+			var operators = [ '+', '-', '\u00D7', '\u00f7' ];
+			var decimalAdded = false;
+			for (var i = 0; i < keys.length; i++) {
+				keys[i].onclick = function(e) {
+					clickBut(this, "button");
+				}
+				
+			}
+			document.addEventListener("keydown", function(e){
+				if(e.location == 3 || (e.key == "Backspace" || e.key == "Delete" || e.key == "Enter" || e.key == "%" || e.key == "(" || e.key == ")" || e.key == "^"))
+					clickBut(e.key, "board");
+			});
+		</script>
+	</body>
+</html>

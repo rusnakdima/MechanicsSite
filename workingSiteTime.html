@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Work site time</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <style>
+            /* Стили объекта с временной шкалой */
+            .life {
+            position: absolute;
+            font-size: 20pt;
+            border: 2px solid black;
+            border-radius: 10px;
+            left: 15px;
+            top: 50px;
+            padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <span style="font-size: 20pt;">2020-10-13 12:00:00</span>
+        <span class="life">Время работы: <span id="tdata"></span></span>
+        <script>
+            // Функция создания текущего времени
+            setInterval(function() {
+                var tnow = new Date();
+                //Создание времени работы сайта в сети интернет
+                var tdata = new Date("2020-10-13 12:00:00");
+                var leapyear = ((new Date().getFullYear() % 4) == 0) ? 366 : 365;
+                var time = Date.parse(tnow) - Date.parse(tdata);
+                var ty = Math.floor(time / (1000 * 3600 * 24 * leapyear));
+                var td = Math.floor((time / (1000 * 3600 * 24)) % leapyear);
+                var th = Math.floor((time / (1000 * 3600)) % 24);
+                var tm = Math.floor((time / (1000 * 60)) % 60);
+                var ts = Math.floor((time / 1000) % 60);
+                th = (th < 10) ? '0' + th : th;
+                tm = (tm < 10) ? '0' + tm : tm;
+                ts = (ts < 10) ? '0' + ts : ts;
+                document.getElementById('tdata').innerHTML = ty + ' Y ' + td + ' D ' + th + ':' + tm + ':' + ts;
+            }, 1000);
+        </script>
+    </body>
+</html>

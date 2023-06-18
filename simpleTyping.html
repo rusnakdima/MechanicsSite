@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple typing</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <style>
+            body{
+                font-size: 20pt;
+            }
+        </style>
+    </head>
+    <body>
+        <span>Примеры: <span id="data" data-rotate='["car", "bow", "chicken", "hunter", "kitchen", "wolf", "plus"]'></span></span>
+        <script>
+            var items = JSON.parse($("#data").attr("data-rotate"));
+            var field = $("#data");
+            var index = 0;
+            var item = 0;
+            var isAdding = true
+
+            function interText(item2){
+                setTimeout(function(){
+                    field.text(item2.slice(0, index));
+                    if(isAdding){
+                        if(index >= item2.length){
+                            isAdding = false;
+                            setTimeout(()=>{
+                                interText(item2);
+                            }, 1000);
+                            return;
+                        } else index++;
+                    } else {
+                        if(index === 0) {
+                            getItem();
+                            isAdding = true;
+                            return;
+                        }
+                        else index--;
+                    }
+                    interText(item2);
+                }, 100);
+            }
+            function getItem(){
+                var item1 = items[item];
+                if(items[item] == undefined) {
+                    item = 0;
+                    getItem();
+                    return;
+                }
+                else item++;
+                interText(item1);
+            }
+            getItem();
+        </script>
+    </body>
+</html>

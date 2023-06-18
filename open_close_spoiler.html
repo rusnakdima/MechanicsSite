@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+		<script src="jquery-3.6.0.min.js"></script>
+	</head>
+	<body>
+		<button id="click"></button>
+		<div id="out"></div>
+		<script>
+			$(()=>{
+				$("#click").text("Open");
+				for(var i = 0; i < 3; i++){
+					var fLevel = $("<details><summary>NaN "+i+"</summary></details>").css({"margin-left":"10px"});
+					for(var j = 0; j < 5; j++){
+						var sLevel = $("<details><summary>NaN "+i+"_"+j+"</summary></details>").css({"margin-left":"20px"});
+						for(var k = 0; k < 2; k++){
+							var tLevel = $("<details><summary>NaN "+i+"_"+j+"_"+k+"</summary></details>").css({"margin-left":"30px", "padding-left":"10px"});
+							var span = $("<span>Hello "+k+"</span>").css({"margin-left":"40px"});
+							$(tLevel).append(span);
+							$(sLevel).append(tLevel);
+						}
+						$(fLevel).append(sLevel);
+					}
+					$("#out").append(fLevel);
+				}
+			});
+			$("#click").click(function(){
+				if($("details").attr("open") == "open"){
+					$("details").removeAttr("open");
+					$("#click").text("Open");
+				} else {
+					$("details").attr("open","");
+					$("#click").text("Close");
+				}
+			});
+		</script>
+	</body>
+</html>

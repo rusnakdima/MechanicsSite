@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Privetstvie</title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1">
+        <script src="jquery-3.6.0.min.js"></script>
+        <style>
+            body{
+                font-size: 20pt;
+            }
+            #privet{
+                font-size: 20pt;
+            }
+        </style>
+    </head>
+    <body>
+        <span id="privet">NaN</span>
+        <script>
+            setInterval(function () {
+				//Вывод приветственного сообщения, в зависимости от времени суток
+				var h = new Date().getHours();
+				if (h <= 5){
+				document.getElementById('privet').innerHTML = 'Доброй ночи!';
+				} else if (h >= 6 && h <= 11){
+				document.getElementById('privet').innerHTML = 'Доброе утро!';
+				} else if (h >= 12 && h <= 17){
+				document.getElementById('privet').innerHTML = 'Добрый день!';
+				} else if (h >= 18 && h <= 23){
+				document.getElementById('privet').innerHTML = 'Добрый вечер!';
+				}
+			}, 1000);
+        </script>
+    </body>
+</html>
